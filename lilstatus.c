@@ -16,7 +16,7 @@ typedef struct {
 static inline int read_file(const char *path, char *dest, size_t size) {
     FILE *f = fopen(path, "r");
     if (!f) return -1;
-    
+
     size_t len = fread(dest, 1, size - 1, f);
     dest[len] = '\0';
     fclose(f);
@@ -26,7 +26,7 @@ static inline int read_file(const char *path, char *dest, size_t size) {
 static void get_memory(void) {
     FILE *f = fopen("/proc/meminfo", "r");
     if (!f) return;
-    
+
     unsigned long total = 0, avail = 0;
     while (fgets(buf, sizeof(buf), f)) {
         if (strncmp(buf, "MemTotal:", 9) == 0)
@@ -35,7 +35,7 @@ static void get_memory(void) {
             sscanf(buf + 13, "%lu", &avail);
     }
     fclose(f);
-    
+
     if (total && avail) {
         unsigned int used_pct = ((total - avail) * 100) / total;
         printf("MEM:(%u%%) ", used_pct);
